@@ -7,30 +7,25 @@ export default function Layout({ title, children, styleName }) {
 	const frame = useRef(null);
 	const tit = useRef(null);
 
-	//인수로 참조객체를 받아서 참조객체의 글자값을 반복돌면서 span으로 감싸주는 함수
-	const splitText = (ref) => {
-		//문자열이 담길 변수초기화
+	const splitText = (ref, gap = 0.1, delay = 0) => {
+		let count = 0;
 		let tags = '';
-
-		//참조객체안쪽의 글자를 innerText로 구해서
-		//for of로 반복처리해면서 span태그로 감싸줌
 		for (let letter of ref.current.innerText) {
-			tags += `<span>${letter}</span>`;
+			tags += `<span style='transition-delay:${gap * count + delay}s'>${letter}</span>`;
+			count++;
 		}
-		//기존 참조객체 안쪽의 글자는 지워주고
 		ref.current.innerText = '';
-		//span으로 감싸준 문자열을 참조객체의 innerHTML으로 삽입
 		ref.current.innerHTML = tags;
 	};
 
 	useEffect(() => {
-		setIsOn(true);
-
-		//컴포넌트가 마운트되자마자 h1요소가 담겨있는 참조객체를 인수로 전달해서 글자 분리
-		splitText(tit);
+		splitText(tit, 0.1, 1);
+		//컴포넌트가 마운트되자마자 h1요소가 담겨있는 참조객체를 인수로 전달해서 글자분리
+		//splitText함수가 기존 가상돔요소를 변경시약간의 시간이 걸리기때문에
+		//0.3초 뒤에 span으로 분리가 완료된 이후 on클래스를 추가
+		setTimeout(() => setIsOn(true), 300);
 	}, []);
 	return (
-		//참조하고싶은 가상돔 요소에 ref로 연결
 		<section ref={frame} className={clsx(styles.layout, styleName, IsOn ? styles.on : '')}>
 			<figure></figure>
 

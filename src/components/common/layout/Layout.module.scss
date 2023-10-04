@@ -22,6 +22,12 @@
 			font: normal 100px/1 'Nanum Myeongjo';
 			color: #555;
 			margin-bottom: 30px;
+			span {
+				display: inline-block;
+				opacity: 0;
+				transform: scale(3);
+				transition-duration: 0.5s;
+			}
 		}
 	}
 	&.on {
@@ -31,6 +37,12 @@
 		.content {
 			opacity: 1;
 			transform: translateX(0px);
+			h1 {
+				span {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
 		}
 	}
 }
