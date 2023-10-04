@@ -1,20 +1,28 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../../common/layout/Layout';
 //import styles from './Department.module.scss';
 //import clsx from 'clsx';
 
 export default function Department() {
+	const [Department, setDepartment] = useState([]);
 	useEffect(() => {
 		//해당 useEffect구문은 컴포넌트 마운트시 한번만 동작됨
 		fetch('./DB/department.json')
 			.then((data) => data.json())
 			.then((json) => {
-				console.log(json);
+				console.log(json.members);
+				setDepartment(json.members);
 			});
 	}, []);
 	return (
 		<Layout title={'Department'}>
-			<p>디파트먼트 페이지입니다.</p>
+			{Department.map((member, idx) => {
+				return (
+					<article key={idx}>
+						<h2>{member.name}</h2>
+					</article>
+				);
+			})}
 		</Layout>
 	);
 }
